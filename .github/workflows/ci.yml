@@ -1,0 +1,22 @@
+name: Docker Build & Run
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+jobs:
+  build-and-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Build image
+        run: docker build -t hello-captain .
+
+      - name: Run container and verify output
+        run: |
+          output="$(docker run --rm hello-captain)"
+          echo "Container output: $output"
+          echo "$output" | grep -q "Hello, Captain!"
